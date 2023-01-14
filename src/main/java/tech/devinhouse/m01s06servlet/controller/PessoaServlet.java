@@ -18,7 +18,9 @@ public class PessoaServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("Read - Pessoa");
+
+
+        resp.getWriter().println(pessoas);
     }
 
     @Override
@@ -40,11 +42,43 @@ public class PessoaServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("Update - Pessoa");
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        String nome = req.getParameter("nome");
+        Integer idade = Integer.parseInt(req.getParameter("idade"));
+
+        Pessoa pessoa = findById(id);
+        if (pessoa == null){
+            resp.getWriter().println(false);
+            return;
+        }
+        pessoa.setNome(nome);
+        pessoa.setIdade(idade);
+
+        resp.getWriter().println(pessoa);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("Delete - Pessoa");
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        Pessoa pessoa = findById(id);
+
+        if (pessoa == null){
+            resp.getWriter().println(false);
+            return;
+        }
+        pessoas.remove(pessoa);
+        resp.getWriter().println(true);
+
     }
+
+    private Pessoa findById(Integer id) {
+        for (Pessoa pessoa: pessoas) {
+            if (pessoa.getId() == id) {
+                return pessoa;
+            }
+        }
+        return null;
+    }
+
+
 }
