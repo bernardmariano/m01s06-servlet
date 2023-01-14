@@ -13,7 +13,7 @@ public class Pessoa {
     }
 
     private Integer proximoId() {
-        return SEQUENCIA++;
+        return ++SEQUENCIA;
     }
 
     public Integer getId() {
